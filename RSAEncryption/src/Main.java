@@ -5,7 +5,7 @@ public class Main
 {
 	public static void main(String[] args) 
 	{
-		int SIZE = 512;
+		int SIZE = 1000, BLOCK_SIZE;
 		BigInteger p = new BigInteger(SIZE, 15, new Random());
 		BigInteger q = new BigInteger(SIZE, 15, new Random());
 		BigInteger n = p.multiply(q);
@@ -20,27 +20,41 @@ public class Main
 		{
 			e.add(BigInteger.ONE);
 		}
-
 		System.out.println("gcd: " + phi.gcd(e));
 		
 		BigInteger d = e.modInverse(phi); //secret key
 		PrivateKey privateKey = new PrivateKey(n,d);
 		PublicKey publicKey = new PublicKey(n,e);
 		
-		if((e.multiply(d).subtract(BigInteger.ONE)).compareTo(phi) < 0)
+		if(e.multiply(d).mod(phi).compareTo(BigInteger.ONE) == 0)
 		{
-			System.out.println("I hope i never see this...");
+			System.out.println("I hope i see this...");
+		}
+	    
+		String input = "";
+		System.out.println("Enter a value: ");
+		input = "I am a test value.";
+	    
+		String s = n.toString();
+		BLOCK_SIZE = s.length();
+		
+		for(int i = 0; i < BLOCK_SIZE - input.length(); i++)
+		{
+			input+="0";
 		}
 		
-		BigInteger m = new BigInteger("100");
+		byte[] m = input.getBytes();
 		System.out.println("m: " + m);
-		BigInteger cipher;
+		byte[] encrypt;
 		
-		cipher = m.modPow(publicKey.getE(), publicKey.getN());
-		System.out.println("cipher: " + cipher);
+		encrypt = (new BigInteger(m)).modPow(publicKey.getE(), publicKey.getN()).toByteArray();
+		System.out.println("cipher: " + encrypt);
 		
-		BigInteger decrypt;
-		decrypt = m.modPow(privateKey.getD(), privateKey.getN());
-		System.out.println("decrypt: " + decrypt);
+		byte[] decrypt;
+		decrypt = (new BigInteger(encrypt)).modPow(privateKey.getD(), privateKey.getN()).toByteArray();
+		System.out.println("decrypt: " + new String(decrypt));
+		
+		System.out.println( "padded input: " + input );
+		System.out.println( "Number of digits in N: " + BLOCK_SIZE );
 	}
 }

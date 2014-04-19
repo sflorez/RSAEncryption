@@ -5,7 +5,7 @@ public class Main
 {
 	public static void main(String[] args) 
 	{
-		int SIZE = 1000, BLOCK_SIZE;
+		int SIZE = 512, BLOCK_SIZE;
 		BigInteger p = new BigInteger(SIZE, 15, new Random());
 		BigInteger q = new BigInteger(SIZE, 15, new Random());
 		BigInteger n = p.multiply(q);
@@ -35,16 +35,18 @@ public class Main
 		System.out.println("Enter a value: ");
 		input = "I am a test value.";
 	    
-		String s = n.toString();
-		BLOCK_SIZE = s.length();
-		
-		for(int i = 0; i < BLOCK_SIZE - input.length(); i++)
+        BLOCK_SIZE = (n.bitLength()/8)-11;
+
+		int loopUntil = BLOCK_SIZE - input.length();
+		for(int i = 0; i < loopUntil; i++)
 		{
 			input+="0";
 		}
 		
+		System.out.println(input.length());
+		
 		byte[] m = input.getBytes();
-		System.out.println("m: " + m);
+		System.out.println("m: " + new String(m));
 		byte[] encrypt;
 		
 		encrypt = (new BigInteger(m)).modPow(publicKey.getE(), publicKey.getN()).toByteArray();

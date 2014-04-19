@@ -1,6 +1,5 @@
 import java.math.BigInteger;
 
-
 public class PublicKey
 {
 	 private BigInteger n, e;

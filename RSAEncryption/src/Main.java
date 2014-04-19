@@ -1,65 +1,18 @@
-import java.math.BigInteger;
-import java.util.Random;
 
 public class Main 
 {
 	public static void main(String[] args) 
 	{
-		int SIZE = 512, BLOCK_SIZE;
-		BigInteger p = new BigInteger(SIZE, 15, new Random());
-		BigInteger q = new BigInteger(SIZE, 15, new Random());
-		BigInteger n = p.multiply(q);
-		System.out.println("n: " + n);
-		
-		BigInteger phi = (p.subtract(BigInteger.ONE)).multiply((q.subtract(BigInteger.ONE)));
-		BigInteger e = BigInteger.probablePrime(SIZE/2, new Random());
-		
-		while( !(phi.gcd(e).equals(BigInteger.ONE) && 
-			   e.compareTo(BigInteger.ONE) > 0 && 
-			   e.compareTo(phi) < 0) )
-		{
-			e.add(BigInteger.ONE);
-		}
-		System.out.println("gcd: " + phi.gcd(e));
-		
-		BigInteger d = e.modInverse(phi); //secret key
-		PrivateKey privateKey = new PrivateKey(n,d);
-		PublicKey publicKey = new PublicKey(n,e);
-		
-		if(e.multiply(d).mod(phi).compareTo(BigInteger.ONE) == 0)
-		{
-			System.out.println("I hope i see this...");
-		}
-	    
 		String input = "";
 		System.out.println("Enter a value: ");
 		input = "I am a test value.";
+		
+		RSA rsa = new RSA();
 	    
-
-        BLOCK_SIZE = (n.bitLength()/8)-11;
-
-		int loopUntil = BLOCK_SIZE - input.length();
-		for(int i = 0; i < loopUntil; i++)
-		{
-			input+="0";
-		}
-
-		System.out.println(input.length());
+		byte[] encryption = rsa.encrypt(input);
+		byte[] decrypt = rsa.decrypt(encryption);
+		String message = rsa.removeMessagePadding(decrypt);
 		
-		byte[] m = input.getBytes();
-		System.out.println("m: " + new String(m));
-		byte[] encrypt;
-		
-		encrypt = encrypt( m , publicKey);
-		System.out.println("cipher: " + encrypt);
-		
-		byte[] decrypt;
-		decrypt = decrypt(encrypt , privateKey);
-		
-		String decryption = new String(decrypt);
-		decryption = decryption.substring(0, (decryption.length() - loopUntil));
-		System.out.println("decrypt: " + decryption);
-		
-		System.out.println( "Number of digits in N: " + BLOCK_SIZE );
+		System.out.println(message);
 	}
 }

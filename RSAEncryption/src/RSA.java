@@ -1,9 +1,10 @@
 import java.math.BigInteger;
 import java.util.Random;
+import java.util.Vector;
 
 public class RSA 
 {
-    private int BLOCK_SIZE, SIZE = 512;
+    private int BLOCK_SIZE, numberOfBlocks, remainder, zerosToAdd, SIZE = 64;
     private BigInteger p,q,n,phi,d,e;
     private PrivateKey privateKey;
     private PublicKey publicKey;
@@ -31,24 +32,67 @@ public class RSA
 		publicKey = new PublicKey(n,e);
     }
    
-	public byte[] encrypt(String message)
+	public Vector<byte[]> encrypt(String message)
 	{
 		originalMessage = message;
-		message = addMessagePadding(message);
-	    byte[] byteMessage = message.getBytes();
-		return (new BigInteger(byteMessage)).modPow(publicKey.getE(), publicKey.getN()).toByteArray();
+		byte [] byteMessage;
+		Vector <byte[]> encryption = new Vector<byte[]>();
+		if( originalMessage.length() > BLOCK_SIZE)
+		{
+			System.out.println("Block size: " + BLOCK_SIZE);
+			remainder = (originalMessage.length() % BLOCK_SIZE);
+			zerosToAdd = (BLOCK_SIZE - remainder);
+			System.out.println("Remainder: " + remainder);
+			if( remainder != 0 )
+			{
+				for( int i = 0; i < zerosToAdd ; i ++)
+				{
+					originalMessage += "0";
+				}
+			}
+			
+			System.out.println("the message after padding: " + originalMessage);
+			numberOfBlocks = (originalMessage.length() / BLOCK_SIZE);
+			System.out.println(numberOfBlocks);
+			
+			for( int i = 0 ; i < numberOfBlocks; i++ )
+			{
+				String toEncrypt = originalMessage.substring(0, BLOCK_SIZE);
+				System.out.println( " to Encrypt:" + toEncrypt);
+				byteMessage = toEncrypt.getBytes();
+				originalMessage = originalMessage.substring(BLOCK_SIZE, originalMessage.length());
+				System.out.println("Message after removal: " + originalMessage);
+				encryption.add(((new BigInteger(byteMessage)).modPow(publicKey.getE(), publicKey.getN()).toByteArray()));			
+			}
+			
+			return encryption;
+		}
+		else
+		{
+			message = addMessagePadding(message);
+		    byteMessage = message.getBytes();
+		    encryption.add((new BigInteger(byteMessage)).modPow(publicKey.getE(), publicKey.getN()).toByteArray());
+			return encryption;
+		}
+
 	}
 	
-	public byte[] decrypt(byte [] message)
+	public byte[] decrypt(Vector<byte[]> message)
 	{
-		return (new BigInteger(message)).modPow(privateKey.getD(), privateKey.getN()).toByteArray();
+		String decryption = "";
+		for ( int i = 0 ; i < message.size(); i ++ )
+		{
+			decryption += new String((new BigInteger(message.elementAt(i))).modPow(privateKey.getD(), privateKey.getN()).toByteArray());
+		}
+//		return (new BigInteger(message)).modPow(privateKey.getD(), privateKey.getN()).toByteArray();
+		return decryption.getBytes();
 	}
 	
 	public String removeMessagePadding(byte[] message)
 	{
 		String decryption = new String(message);
-		int loopUntil = BLOCK_SIZE - originalMessage.length();
-		decryption = decryption.substring(0, (decryption.length() - loopUntil));
+//		int loopUntil = BLOCK_SIZE - originalMessage.length();
+		decryption = decryption.substring(0, (decryption.length() - zerosToAdd));
 		return decryption;
 	}
 	

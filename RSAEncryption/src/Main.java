@@ -51,14 +51,27 @@ public class Main
 		System.out.println("m: " + new String(m));
 		byte[] encrypt;
 		
-		encrypt = (new BigInteger(m)).modPow(publicKey.getE(), publicKey.getN()).toByteArray();
+		encrypt = encrypt( m , publicKey);
 		System.out.println("cipher: " + encrypt);
 		
 		byte[] decrypt;
-		decrypt = (new BigInteger(encrypt)).modPow(privateKey.getD(), privateKey.getN()).toByteArray();
-		System.out.println("decrypt: " + new String(decrypt));
+		decrypt = decrypt(encrypt , privateKey);
+		
+		String decryption = new String(decrypt);
+		
+		System.out.println("decrypt: " + decryption);
 		
 		
 		System.out.println( "Number of digits in N: " + BLOCK_SIZE );
+	}
+	
+	public static byte[] encrypt(byte [] messege , PublicKey key)
+	{
+		return (new BigInteger(messege)).modPow(key.getE(), key.getN()).toByteArray();
+	}
+	
+	public static byte[] decrypt(byte [] messege , PrivateKey key)
+	{
+		return (new BigInteger(messege)).modPow(key.getD(), key.getN()).toByteArray();
 	}
 }

@@ -58,7 +58,7 @@ public class Main
 		decrypt = decrypt(encrypt , privateKey);
 		
 		String decryption = new String(decrypt);
-		
+		decryption = decryption.substring(0, (decryption.length() - loopUntil));
 		System.out.println("decrypt: " + decryption);
 		
 		

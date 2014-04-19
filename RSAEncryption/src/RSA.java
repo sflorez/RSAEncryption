@@ -4,7 +4,7 @@ import java.util.Vector;
 
 public class RSA 
 {
-    private int BLOCK_SIZE, numberOfBlocks, remainder, zerosToAdd, SIZE = 64;
+    private int BLOCK_SIZE, numberOfBlocks, remainder, zerosToAdd = 0, SIZE = 64;
     private BigInteger p,q,n,phi,d,e;
     private PrivateKey privateKey;
     private PublicKey publicKey;
@@ -41,10 +41,10 @@ public class RSA
 		{
 			System.out.println("Block size: " + BLOCK_SIZE);
 			remainder = (originalMessage.length() % BLOCK_SIZE);
-			zerosToAdd = (BLOCK_SIZE - remainder);
 			System.out.println("Remainder: " + remainder);
 			if( remainder != 0 )
 			{
+				zerosToAdd = (BLOCK_SIZE - remainder);
 				for( int i = 0; i < zerosToAdd ; i ++)
 				{
 					originalMessage += "0";
@@ -98,9 +98,9 @@ public class RSA
 	
 	public String addMessagePadding(String input)
 	{
-		int loopUntil = BLOCK_SIZE - input.length();
+		zerosToAdd = BLOCK_SIZE - input.length();
 		
-		for(int i = 0; i < loopUntil; i++)
+		for(int i = 0; i < zerosToAdd; i++)
 		{
 			input+="0";
 		}

@@ -17,7 +17,7 @@ public class Main
 //		System.out.println(encryption);
 		byte[] decrypt = rsa.decrypt(encryption);
 //		System.out.println(decrypt);
-		String message = rsa.removeMessagePadding(decrypt);
-		System.out.println(message);
+        String message = rsa.removeMessagePadding(decrypt);
+		System.out.println("Decrypted message: " + message);
 	}
 }

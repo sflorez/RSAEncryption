@@ -37,14 +37,21 @@ public class Main
 	    
 		String s = n.toString();
 		BLOCK_SIZE = s.length();
+		int size = BLOCK_SIZE - input.length();
 		
-		for(int i = 0; i < BLOCK_SIZE - input.length(); i++)
+		System.out.println( "blocksize:" + size);
+		
+		for(int i = 0; i < size; i++)
 		{
-			input+="0";
+			input+="O";
 		}
 		
+		System.out.println( "padded input: " + input );
+		System.out.println( "padded input size " + (input.length()));
+		
+		
 		byte[] m = input.getBytes();
-		System.out.println("m: " + m);
+		System.out.println("m: " + new String(m));
 		byte[] encrypt;
 		
 		encrypt = (new BigInteger(m)).modPow(publicKey.getE(), publicKey.getN()).toByteArray();
@@ -54,7 +61,7 @@ public class Main
 		decrypt = (new BigInteger(encrypt)).modPow(privateKey.getD(), privateKey.getN()).toByteArray();
 		System.out.println("decrypt: " + new String(decrypt));
 		
-		System.out.println( "padded input: " + input );
+		
 		System.out.println( "Number of digits in N: " + BLOCK_SIZE );
 	}
 }

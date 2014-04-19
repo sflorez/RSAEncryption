@@ -41,12 +41,11 @@ public class Main
 		int loopUntil = BLOCK_SIZE - input.length();
 		for(int i = 0; i < loopUntil; i++)
 		{
-			input+="O";
+			input+="0";
 		}
-		
 
 		System.out.println(input.length());
-
+		
 		byte[] m = input.getBytes();
 		System.out.println("m: " + new String(m));
 		byte[] encrypt;
@@ -61,17 +60,6 @@ public class Main
 		decryption = decryption.substring(0, (decryption.length() - loopUntil));
 		System.out.println("decrypt: " + decryption);
 		
-		
 		System.out.println( "Number of digits in N: " + BLOCK_SIZE );
-	}
-	
-	public static byte[] encrypt(byte [] messege , PublicKey key)
-	{
-		return (new BigInteger(messege)).modPow(key.getE(), key.getN()).toByteArray();
-	}
-	
-	public static byte[] decrypt(byte [] messege , PrivateKey key)
-	{
-		return (new BigInteger(messege)).modPow(key.getD(), key.getN()).toByteArray();
 	}
 }

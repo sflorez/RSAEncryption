@@ -20,12 +20,12 @@ public class PrivateKey
 	  d = myD;
   }
   
-  BigInteger getD()
+  public BigInteger getD()
   {
 	 return d; 
   }
   
-  BigInteger getN()
+  public BigInteger getN()
   {
 	  return n;
   }

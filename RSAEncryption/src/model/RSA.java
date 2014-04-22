@@ -1,3 +1,4 @@
+package model;
 import java.math.BigInteger;
 import java.util.Random;
 import java.util.Vector;
@@ -105,5 +106,12 @@ public class RSA
 			input+="0";
 		}
 		return input;
+	}
+	
+	public String getCurrentPublicKey()
+	{
+		String output = "";
+		output = "E is: " + publicKey.getE() + "\n" + "N is: " + publicKey.getN();
+		return output;
 	}
 }

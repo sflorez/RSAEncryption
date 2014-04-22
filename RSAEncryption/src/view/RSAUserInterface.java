@@ -1,8 +1,8 @@
+package view;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -13,6 +13,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
+import controller.RSAController;
 
 public class RSAUserInterface extends JFrame 
 {
@@ -24,7 +25,7 @@ public class RSAUserInterface extends JFrame
 	  				  myDecryptOutputBox;
 //	private JSplitPane mySeperatorPane;
 
-	public RSAUserInterface() 
+	public RSAUserInterface(RSAController controller) 
 	{
 		displayUI();
 	}
@@ -129,6 +130,12 @@ public class RSAUserInterface extends JFrame
 		myPrivateKeyDisplay.setEditable(false);
 		myEncryptOutputBox.setEditable(false);
 		myDecryptInputBox.setEditable(false);
+	}
+	
+	public void setPublicKeyDisplay(String currentPublicKey)
+	{
+		myPublicKeyDisplay.setText(currentPublicKey);
+		validate();
 	}
     
 	/*

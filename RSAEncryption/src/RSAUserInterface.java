@@ -1,10 +1,13 @@
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
@@ -16,10 +19,10 @@ public class RSAUserInterface extends JFrame
 	private static final long serialVersionUID = 1L;
 	private JTabbedPane myViewPane;
 	private JButton myDecryptMessageBtn, myEncryptMessageBtn;
-	private JScrollPane myBlankContainer;
+//	private JScrollPane myBlankContainer;
 	private JTextArea myPublicKeyDisplay, myPrivateKeyDisplay, myEncryptInputBox, myEncryptOutputBox, myDecryptInputBox, 
 	  				  myDecryptOutputBox;
-	private JSplitPane mySeperatorPane;
+//	private JSplitPane mySeperatorPane;
 
 	public RSAUserInterface() 
 	{
@@ -31,7 +34,6 @@ public class RSAUserInterface extends JFrame
 		setTitle("Send Secure Data - RSA Encryption");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		createTextLabels();
-		
 		
 		/*
 		 * Create first panel, which is the panel that allows the user to enter in a message to encrypt.
@@ -85,8 +87,19 @@ public class RSAUserInterface extends JFrame
 		myViewPane = new JTabbedPane();
 		myViewPane.addTab("RSA Encrypt", encryptPanel);
 		myViewPane.addTab("RSA Decrypt", decryptPanel);
-		mySeperatorPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, myBlankContainer, myViewPane);
-		add(mySeperatorPane);
+		add(myViewPane);
+		
+		/*
+		 * To do's: Ask about design feature here
+		 * Possible code to use for upper hidden message feature?
+		 * 
+		 * Side note: Must remove myViewPane from view if doing it this way,
+		 * so therefore must comment out add(myViewPane) found directly above.
+		 */
+		//myBlankContainer = new JScrollPane();
+		//myBlankContainer.setBackground(Color.RED);
+		//mySeperatorPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, myBlankContainer, myViewPane);
+		//add(mySeperatorPane);
 
 		pack();
 		setVisible(true);

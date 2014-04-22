@@ -1,3 +1,6 @@
+/*
+ * Run the entire program from here
+ */
 package model;
 import controller.RSAController;
 

@@ -1,9 +1,13 @@
+/*
+ * The View leverages a JTabbedPane to present the user with a clean organized window for sending and
+ * receiving secure messages. Tab one is used to enter a message to encrypt, and the second tab allows
+ * the user to decrypt their message.
+ */
 package view;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Vector;
-
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -12,7 +16,6 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
-import javax.swing.ScrollPaneConstants;
 
 import controller.RSAController;
 
@@ -33,6 +36,9 @@ public class RSAUserInterface extends JFrame
 		displayUI();
 	}
 	
+	/*
+	 * Assemble the user interface, and set it visible for the user.
+	 */
 	private void displayUI()
 	{
 		setTitle("Send Secure Data - RSA Encryption");
@@ -72,7 +78,7 @@ public class RSAUserInterface extends JFrame
 		
 		
 		/*
-		 * Create second panel, which allows the user to view the encrypted/decrypted messages.
+		 * Create second panel, which allows the user to decrypt their messages.
 		 */
 		JPanel decryptPanel = new JPanel();
 		decryptPanel.setLayout(new BoxLayout(decryptPanel, BoxLayout.Y_AXIS));
@@ -109,10 +115,13 @@ public class RSAUserInterface extends JFrame
 		setVisible(true);
 	}
 
+	/*
+	 * Function used to avoid duplicate code when creating all the JTextArea's needed for the View.
+	 */
 	private void createTextLabels() 
 	{
 		/*
-		 * To-Do's: Customize look and feel of each textbox for better 
+		 * To-Do's: Customize look and feel of each JTextArea for better 
 		 * overall user experience.
 		 */
 		myPublicKeyDisplay = createTextBox("Public Key");
@@ -135,6 +144,29 @@ public class RSAUserInterface extends JFrame
 		myDecryptInputBox.setEditable(false);
 	}
 	
+	/*
+	 * Utility method used to handle the various text area creations. This method
+	 * is used mainly to avoid duplicate code.
+	 */
+	private JTextArea createTextBox(String title) 
+	{
+		JTextArea textArea = new JTextArea(10, 62);
+		textArea.setBorder(BorderFactory.createTitledBorder(title));
+		textArea.setLineWrap(true);
+		return textArea;
+	}
+	
+	/*
+	 * Below are all the accessor/mutator functions for displaying text to the UI, and for grabbing
+	 * any text that the user has entered.
+	 */
+	public String getUserMessage()
+	{
+		String userMessage = "";
+		userMessage = myEncryptInputBox.getText();
+		return userMessage;
+	}
+	
 	public void setPublicKeyDisplay(String currentPublicKey)
 	{
 		myPublicKeyDisplay.setText(currentPublicKey);
@@ -147,13 +179,6 @@ public class RSAUserInterface extends JFrame
 		validate();
 	}
 	
-	public String getUserMessage()
-	{
-		String userMessage = "";
-		userMessage = myEncryptInputBox.getText();
-		return userMessage;
-	}
-	
 	public void setEncryptedMessageDisplay()
 	{
 		myEncryptOutputBox.setText(myEncryption.toString());
@@ -163,17 +188,5 @@ public class RSAUserInterface extends JFrame
 	public void setDecryptedMessageDisplay(String decryptedData)
 	{
 		myDecryptOutputBox.setText(decryptedData);
-	}
-    
-	/*
-	 * Utility method used to handle the various text area creations. This method
-	 * is used mainly to avoid duplicate code.
-	 */
-	private JTextArea createTextBox(String title) 
-	{
-		JTextArea textArea = new JTextArea(10, 62);
-		textArea.setBorder(BorderFactory.createTitledBorder(title));
-		textArea.setLineWrap(true);
-		return textArea;
 	}
 }

@@ -1,3 +1,6 @@
+/*
+ * Class designed to store the information associated with the user's private key
+ */
 package model;
 import java.math.BigInteger;
 

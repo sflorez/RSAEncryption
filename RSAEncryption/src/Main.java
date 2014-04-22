@@ -19,5 +19,7 @@ public class Main
 //		System.out.println(decrypt);
         String message = rsa.removeMessagePadding(decrypt);
 		System.out.println("Decrypted message: " + message);
+		
+		RSAUserInterface ui = new RSAUserInterface();
 	}
 }

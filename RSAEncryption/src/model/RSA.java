@@ -111,7 +111,14 @@ public class RSA
 	public String getCurrentPublicKey()
 	{
 		String output = "";
-		output = "E is: " + publicKey.getE() + "\n" + "N is: " + publicKey.getN();
+		output = "\n" + "E is: " + publicKey.getE() + "\n\n" + "N is: " + publicKey.getN();
+		return output;
+	}
+	
+	public String getCurrentPrivateKey()
+	{
+		String output = "";
+		output = "\n" + "D is: " + privateKey.getD() + "\n\n" + "N is: " + privateKey.getN();
 		return output;
 	}
 }

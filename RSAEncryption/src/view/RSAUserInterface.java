@@ -1,32 +1,33 @@
 package view;
-import java.awt.Color;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Vector;
+
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JSplitPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
+
 import controller.RSAController;
 
 public class RSAUserInterface extends JFrame 
 {
 	private static final long serialVersionUID = 1L;
 	private JTabbedPane myViewPane;
+	private RSAController myController;
+	private Vector<byte[]> myEncryption;
 	private JButton myDecryptMessageBtn, myEncryptMessageBtn;
-//	private JScrollPane myBlankContainer;
 	private JTextArea myPublicKeyDisplay, myPrivateKeyDisplay, myEncryptInputBox, myEncryptOutputBox, myDecryptInputBox, 
 	  				  myDecryptOutputBox;
-//	private JSplitPane mySeperatorPane;
 
 	public RSAUserInterface(RSAController controller) 
 	{
+		myController = controller;
+		myEncryption = new Vector<byte[]>();
 		displayUI();
 	}
 	
@@ -48,8 +49,15 @@ public class RSAUserInterface extends JFrame
 		{
 			public void actionPerformed(ActionEvent event) 
 			{
-				//handle message encryption here
-			}
+				String message = getUserMessage();
+				
+				if(message != "")
+				{
+					message = getUserMessage();
+					myEncryption = myController.encryptMessage(message);
+					setEncryptedMessageDisplay();
+				}
+			 }
 		});
 		
 		encryptPanel.add(myEncryptInputBox);
@@ -70,7 +78,8 @@ public class RSAUserInterface extends JFrame
 		{
 			public void actionPerformed(ActionEvent event) 
 			{
-				//handle message decryption here
+				 String decryptedData = myController.decryptMessage(myEncryption);
+				 setDecryptedMessageDisplay(decryptedData);
 			}
 		});
 		
@@ -82,25 +91,11 @@ public class RSAUserInterface extends JFrame
 		
 		/*
 		 * Add all the panels to the tab pane for easy access and organization
-		 * 
-		 * Also add tab pane to the main split pane view for desired look and feel.
 		 */
 		myViewPane = new JTabbedPane();
 		myViewPane.addTab("RSA Encrypt", encryptPanel);
 		myViewPane.addTab("RSA Decrypt", decryptPanel);
 		add(myViewPane);
-		
-		/*
-		 * To do's: Ask about design feature here
-		 * Possible code to use for upper hidden message feature?
-		 * 
-		 * Side note: Must remove myViewPane from view if doing it this way,
-		 * so therefore must comment out add(myViewPane) found directly above.
-		 */
-		//myBlankContainer = new JScrollPane();
-		//myBlankContainer.setBackground(Color.RED);
-		//mySeperatorPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, myBlankContainer, myViewPane);
-		//add(mySeperatorPane);
 
 		pack();
 		setVisible(true);
@@ -136,6 +131,30 @@ public class RSAUserInterface extends JFrame
 	{
 		myPublicKeyDisplay.setText(currentPublicKey);
 		validate();
+	}
+	
+	public void setPrivateKeyDisplay(String currentPrivateKey)
+	{
+		myPrivateKeyDisplay.setText(currentPrivateKey);
+		validate();
+	}
+	
+	public String getUserMessage()
+	{
+		String userMessage = "";
+		userMessage = myEncryptInputBox.getText();
+		return userMessage;
+	}
+	
+	public void setEncryptedMessageDisplay()
+	{
+		myEncryptOutputBox.setText(myEncryption.toString());
+		myDecryptInputBox.setText(myEncryption.toString());
+	}
+	
+	public void setDecryptedMessageDisplay(String decryptedData)
+	{
+		myDecryptOutputBox.setText(decryptedData);
 	}
     
 	/*

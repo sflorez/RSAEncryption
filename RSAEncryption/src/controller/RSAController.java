@@ -11,21 +11,26 @@ public class RSAController
 	
 	public RSAController()
 	{
-		Scanner in = new Scanner(System.in);
-		String input = "";
-		System.out.println("Enter a value: ");
-		input = in.nextLine();
-
 		myModel = new RSA();
-
-		Vector<byte[]> encryption = myModel.encrypt(input);
-		byte[] decrypt = myModel.decrypt(encryption);
-
-        String message = myModel.removeMessagePadding(decrypt);
-		System.out.println("Decrypted message: " + message);
 		
 		String userPublicDisplayKey = myModel.getCurrentPublicKey();
+		String userPrivateDisplayKey = myModel.getCurrentPrivateKey();
+		
 		myView = new RSAUserInterface(this);
 		myView.setPublicKeyDisplay(userPublicDisplayKey);
+		myView.setPrivateKeyDisplay(userPrivateDisplayKey);
+	}
+	
+	public Vector<byte[]> encryptMessage(String input)
+	{
+		Vector<byte[]> encryption = myModel.encrypt(input);
+		return encryption;
+	}
+	
+	public String decryptMessage(Vector<byte[]> encryption)
+	{
+		byte[] decrypt = myModel.decrypt(encryption);
+        String message = myModel.removeMessagePadding(decrypt);
+        return message;
 	}
 }

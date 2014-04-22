@@ -5,7 +5,7 @@ import java.util.Vector;
 
 public class RSA 
 {
-    private int BLOCK_SIZE, numberOfBlocks, remainder, zerosToAdd = 0, SIZE = 2500;
+    private int BLOCK_SIZE, numberOfBlocks, remainder, zerosToAdd = 0, SIZE = 1500;
     private BigInteger p,q,n,phi,d,e;
     private PrivateKey privateKey;
     private PublicKey publicKey;

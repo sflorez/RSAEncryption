@@ -19,14 +19,17 @@ public class RSA
     
     public RSA()
     {
+    	//generating p and q to be large primes 
     	p = new BigInteger(SIZE, 15, new Random());
 		q = new BigInteger(SIZE, 15, new Random());
 		n = p.multiply(q);
 		BLOCK_SIZE = (n.bitLength()/8)-11;
 		
+		//generating phi and e to be used in calculations
 		phi = (p.subtract(BigInteger.ONE)).multiply((q.subtract(BigInteger.ONE)));
 		e = BigInteger.probablePrime(SIZE/2, new Random());
 		
+		//while e is not within the necessary bounds keep generating one.
 		while( !(phi.gcd(e).equals(BigInteger.ONE) && 
 			   e.compareTo(BigInteger.ONE) > 0 && 
 			   e.compareTo(phi) < 0) )
@@ -34,18 +37,32 @@ public class RSA
 			e.add(BigInteger.ONE);
 		}
 		
+		//generating the secret key for decryption
 		d = e.modInverse(phi); 
+		
+		//setting them to their objects to be used throughout program
 		privateKey = new PrivateKey(n,d);
 		publicKey = new PublicKey(n,e);
     }
    
+    /*
+     * Encrypt method that takes in a string message and encrypts it in blocks. It adds those blocks to
+     * a vector of byte arrays to be used for decryption.
+     * 
+     * @params the message that is to be encrypted
+     * 
+     * @returns the vector of byte arrays containing the encrypted message
+     */
 	public Vector<byte[]> encrypt(String message)
 	{
 		originalMessage = message;
 		byte [] byteMessage;
 		Vector <byte[]> encryption = new Vector<byte[]>();
+		
+		//if the message needs to be divided because it is bigger than the blocksize
 		if( originalMessage.length() > BLOCK_SIZE)
 		{
+			//calculates if the message can be perfectly divided by the blocksize otherwise it pads it with zeros
 			remainder = (originalMessage.length() % BLOCK_SIZE);
 			if( remainder != 0 )
 			{
@@ -56,6 +73,7 @@ public class RSA
 				}
 			}
 			
+			//calculates the number of blocks that the message needs to be divided into
 			numberOfBlocks = (originalMessage.length() / BLOCK_SIZE);
 			for( int i = 0 ; i < numberOfBlocks; i++ )
 			{
@@ -76,8 +94,17 @@ public class RSA
 		}
 	}
 	
+	/*
+	 * The decrypt method that takes in the vector of byte arrays that needs to be decrypted
+	 * 
+	 * @params the message to be decrypted
+	 * 
+	 * @returns the string message that has been decrypted
+	 */
 	public byte[] decrypt(Vector<byte[]> message)
 	{
+		// loops through the vector of byte arrays that contains the encrypted message and concatenate each
+		// block once decrypted to the end of the decryption string 
 		String decryption = "";
 		for ( int i = 0 ; i < message.size(); i ++ )
 		{
@@ -87,6 +114,13 @@ public class RSA
 		return decryption.getBytes();
 	}
 	
+	/*
+	 * Method that removes the padding from the end of a decrypted message
+	 * 
+	 * @params the byte array of the message to be altered
+	 * 
+	 * @return the decrpyted message without padding
+	 */
 	public String removeMessagePadding(byte[] message)
 	{
 		String decryption = new String(message);
@@ -94,6 +128,14 @@ public class RSA
 		return decryption;
 	}
 	
+	
+	/*
+	 * Method that adds padding at the end of a message as needed by the encryption
+	 * 
+	 * @params the string to be padded
+	 * 
+	 * @return the padded message
+	 */
 	public String addMessagePadding(String input)
 	{
 		zerosToAdd = BLOCK_SIZE - input.length();
@@ -105,6 +147,11 @@ public class RSA
 		return input;
 	}
 	
+	/*
+	 * Method that returns the values of the public key to be displayed by the gui
+	 * 
+	 * @return the public key information
+	 */
 	public String getCurrentPublicKey()
 	{
 		String output = "";
@@ -112,6 +159,11 @@ public class RSA
 		return output;
 	}
 	
+	/*
+	 * Method that return the private key information to be displayed by the gui
+	 * 
+	 * @return the private key info
+	 */
 	public String getCurrentPrivateKey()
 	{
 		String output = "";

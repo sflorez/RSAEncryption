@@ -69,10 +69,10 @@ public class RSA
 		}
 		else
 		{
-			message = addMessagePadding(message);
+		    message = addMessagePadding(message);
 		    byteMessage = message.getBytes();
 		    encryption.add((new BigInteger(byteMessage)).modPow(publicKey.getE(), publicKey.getN()).toByteArray());
-			return encryption;
+		    return encryption;
 		}
 
 	}
@@ -84,14 +84,14 @@ public class RSA
 		{
 			decryption += new String((new BigInteger(message.elementAt(i))).modPow(privateKey.getD(), privateKey.getN()).toByteArray());
 		}
-//		return (new BigInteger(message)).modPow(privateKey.getD(), privateKey.getN()).toByteArray();
+
 		return decryption.getBytes();
 	}
 	
 	public String removeMessagePadding(byte[] message)
 	{
 		String decryption = new String(message);
-//		int loopUntil = BLOCK_SIZE - originalMessage.length();
+
 		decryption = decryption.substring(0, (decryption.length() - zerosToAdd));
 		return decryption;
 	}

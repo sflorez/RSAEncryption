@@ -1,3 +1,9 @@
+/*
+ * Our project encrypts data using blocks of bytes. The size of our block is (n.bitLength()/8)-11, n being the
+ * bit length of the key. Our public key is randomly generated up to the bit length, which is currently set to
+ * 1500 to improve user experience, but it can be much larger for security purposes.
+ * 
+ */
 package model;
 import java.math.BigInteger;
 import java.util.Random;
@@ -5,7 +11,7 @@ import java.util.Vector;
 
 public class RSA 
 {
-    private int BLOCK_SIZE, numberOfBlocks, remainder, zerosToAdd = 0, SIZE = 2500;
+    private int BLOCK_SIZE, numberOfBlocks, remainder, zerosToAdd = 0, SIZE = 1500;
     private BigInteger p,q,n,phi,d,e;
     private PrivateKey privateKey;
     private PublicKey publicKey;

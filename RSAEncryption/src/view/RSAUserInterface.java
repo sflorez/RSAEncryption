@@ -9,8 +9,10 @@ import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
+import javax.swing.ScrollPaneConstants;
 
 import controller.RSAController;
 
@@ -60,10 +62,13 @@ public class RSAUserInterface extends JFrame
 			 }
 		});
 		
-		encryptPanel.add(myEncryptInputBox);
-		encryptPanel.add(myPublicKeyDisplay);
+		JScrollPane scrollPane1 = new JScrollPane(myEncryptInputBox);
+		JScrollPane scrollPane2 = new JScrollPane(myEncryptOutputBox);
+		JScrollPane scrollPane3 = new JScrollPane(myPublicKeyDisplay);
+		encryptPanel.add(scrollPane1);
+		encryptPanel.add(scrollPane3);
 		encryptPanel.add(myEncryptMessageBtn);
-		encryptPanel.add(myEncryptOutputBox);
+		encryptPanel.add(scrollPane2);
 		
 		
 		/*
@@ -83,10 +88,13 @@ public class RSAUserInterface extends JFrame
 			}
 		});
 		
-		decryptPanel.add(myDecryptInputBox);
+		JScrollPane scrollPane4 = new JScrollPane(myDecryptInputBox);
+		JScrollPane scrollPane5 = new JScrollPane(myPrivateKeyDisplay);
+		JScrollPane scrollPane6 = new JScrollPane(myDecryptOutputBox);
+		decryptPanel.add(scrollPane4);
 		decryptPanel.add(myDecryptMessageBtn);
-		decryptPanel.add(myPrivateKeyDisplay);
-		decryptPanel.add(myDecryptOutputBox);
+		decryptPanel.add(scrollPane5);
+		decryptPanel.add(scrollPane6);
 
 		
 		/*

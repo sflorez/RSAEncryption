@@ -5,7 +5,7 @@ import java.util.Vector;
 
 public class RSA 
 {
-    private int BLOCK_SIZE, numberOfBlocks, remainder, zerosToAdd = 0, SIZE = 64;
+    private int BLOCK_SIZE, numberOfBlocks, remainder, zerosToAdd = 0, SIZE = 2500;
     private BigInteger p,q,n,phi,d,e;
     private PrivateKey privateKey;
     private PublicKey publicKey;
@@ -40,9 +40,7 @@ public class RSA
 		Vector <byte[]> encryption = new Vector<byte[]>();
 		if( originalMessage.length() > BLOCK_SIZE)
 		{
-			System.out.println("Block size: " + BLOCK_SIZE);
 			remainder = (originalMessage.length() % BLOCK_SIZE);
-			System.out.println("Remainder: " + remainder);
 			if( remainder != 0 )
 			{
 				zerosToAdd = (BLOCK_SIZE - remainder);
@@ -52,17 +50,12 @@ public class RSA
 				}
 			}
 			
-			System.out.println("the message after padding: " + originalMessage);
 			numberOfBlocks = (originalMessage.length() / BLOCK_SIZE);
-			System.out.println(numberOfBlocks);
-			
 			for( int i = 0 ; i < numberOfBlocks; i++ )
 			{
 				String toEncrypt = originalMessage.substring(0, BLOCK_SIZE);
-				System.out.println( " to Encrypt:" + toEncrypt);
 				byteMessage = toEncrypt.getBytes();
 				originalMessage = originalMessage.substring(BLOCK_SIZE, originalMessage.length());
-				System.out.println("Message after removal: " + originalMessage);
 				encryption.add(((new BigInteger(byteMessage)).modPow(publicKey.getE(), publicKey.getN()).toByteArray()));			
 			}
 			
@@ -75,7 +68,6 @@ public class RSA
 		    encryption.add((new BigInteger(byteMessage)).modPow(publicKey.getE(), publicKey.getN()).toByteArray());
 		    return encryption;
 		}
-
 	}
 	
 	public byte[] decrypt(Vector<byte[]> message)
@@ -92,7 +84,6 @@ public class RSA
 	public String removeMessagePadding(byte[] message)
 	{
 		String decryption = new String(message);
-
 		decryption = decryption.substring(0, (decryption.length() - zerosToAdd));
 		return decryption;
 	}
@@ -118,7 +109,7 @@ public class RSA
 	public String getCurrentPrivateKey()
 	{
 		String output = "";
-		output = "\n" + "D is: " + privateKey.getD() + "\n\n" + "N is: " + privateKey.getN();
+		output = "N is: " + privateKey.getN();
 		return output;
 	}
 }

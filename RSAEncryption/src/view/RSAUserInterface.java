@@ -41,7 +41,7 @@ public class RSAUserInterface extends JFrame
 	 */
 	private void displayUI()
 	{
-		setTitle("Send Secure Data - RSA Encryption");
+		setTitle("Secure Your Data - RSA Encryption");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		createTextLabels();
 		

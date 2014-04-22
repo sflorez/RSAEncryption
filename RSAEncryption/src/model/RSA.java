@@ -1,3 +1,9 @@
+/*
+ * Our project encrypts data using blocks of bytes. The size of our block is (n.bitLength()/8)-11, n being the
+ * bit length of the key. Our public key is randomly generated up to the bit length, which is currently set to
+ * 1500 to improve user experience, but it can be much larger for security purposes.
+ * 
+ */
 package model;
 import java.math.BigInteger;
 import java.util.Random;
